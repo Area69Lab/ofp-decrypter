@@ -1,0 +1,52 @@
+name: OZIP Decrypter by Area69Labs..
+
+on:
+#  release:
+#    types: [published]
+#  push:
+#    branches:
+#      - master
+#    paths:
+#      - '.config'
+#  schedule:
+#    - cron: 0 8 * * 5
+  watch:
+    types: [started]
+
+env:
+  OFP_LINK: https://down-cloud.rbinternationalnetwork.workers.dev//RMX2185_11_A.79_201104_e6e6c09b.ofp
+  OFP_NAME: RMX2185_11_A.79_201104_e6e6c09b.ofp
+  TZ: Asia/Kolkata
+
+jobs:
+  build:
+    runs-on: ubuntu-16.04
+
+    steps:
+       - name: Checkout
+         uses: actions/checkout@master
+         
+       - name: CleanUp Enviroment
+       run: |
+            wget https://raw.githubusercontent.com/Mediatek-leaks/script-personal/main/init.sh
+            sudo bash init.sh
+            
+       - name: Downloading Ofp Now.. 
+         run: |
+            sudo -E apt-get -qq update
+            wget $OFP_LINK
+             
+       - name: Decrypting Ozip Now
+         run: |
+             sudo -E apt-get -qq update
+             sudo apt-get install python-pip
+             sudo pip install docopt
+             sudo pip install pycryptodome
+             wget https://raw.githubusercontent.com/bkerler/oppo_decrypt/master/ofp_mtk_decrypt.py
+             sudo python3 ofp_mtk_decrypt.py $OFP_NAME out
+             
+       - name: Compress & Upload Decrypted Zip
+         run: |
+              zip -r9 Decrypted-ofp.zip out
+              curl -sL https://git.io/file-transfer | sh
+              ./transfer wet Decrypted-ofp.zip    
