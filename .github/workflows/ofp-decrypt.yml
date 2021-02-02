@@ -39,7 +39,6 @@ jobs:
        - name: Decrypting Ozip Now
          run: |
              sudo -E apt-get -qq update
-             sudo apt-get install python-pip
              sudo pip install docopt
              sudo pip install pycryptodome
              wget https://raw.githubusercontent.com/bkerler/oppo_decrypt/master/ofp_mtk_decrypt.py
