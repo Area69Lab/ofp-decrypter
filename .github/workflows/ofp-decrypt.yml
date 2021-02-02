@@ -33,7 +33,7 @@ jobs:
             
        - name: Downloading Ofp Now.. 
          run: |
-            sudo apt-get install expect
+            sudo apt-get install expect -y
             sudo -E apt-get -qq update
             wget $OFP_LINK
              
