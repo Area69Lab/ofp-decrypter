@@ -47,5 +47,21 @@ jobs:
        - name: Compress & Upload Decrypted Zip
          run: |
               zip -r9 Decrypted-ofp.zip out
-              curl -sL https://git.io/file-transfer | sh
-              ./transfer wet Decrypted-ofp.zip    
+              
+       - name: Upload Decrypted Zip
+         run: |
+              expect -c " 
+              spawn sftp ${{ secrets.SFUSER }}@frs.sourceforge.net
+              expect \"yes/no\"
+              send \"yes\r\"
+              expect \"Password\"        
+              send \"${{ secrets.SFPASS }}\r\"
+              expect \"sftp> \"
+              send \"cd ${{ secrets.SFDIR }}\r\"
+              set timeout -1
+              send \"put Decrypted-ofp.zip\r\"
+              expect \"Uploading\"
+              expect \"100%\"
+              expect \"sftp>\"
+              send \"bye\r\"
+              interact"     
