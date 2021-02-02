@@ -20,6 +20,16 @@ Here are some useful points to use this automation tool !
 
 ```OFP_NAME : The Name of Ofp (like RMX2185_A.79_blahblah.ofp )```
 
+Now You Need to Setup Some Repository Secrets too :-
+* Go to Repo Settings > Secrets > Add New Repo Secret
+* Now Add Secrets Like This
+
+```SFUSER : Your Sourceforge Username```
+
+```SFPASS : Your Sourceforge Password```
+
+```SFDIR : Your Sourceforge Directory (eg: /home/frs/project/techyminati/Test ) ```
+
 3. Go to actions tab, enable workflows.
 
 4. Star the repo, go to actions tab again, and let Magic Goes Brr
