@@ -1,21 +1,18 @@
 name: Ofp Decrypter by Area69Labs..
 
 on:
-#  release:
-#    types: [published]
-#  push:
-#    branches:
-#      - master
-#    paths:
-#      - '.config'
-#  schedule:
-#    - cron: 0 8 * * 5
-  watch:
-    types: [started]
+workflow_dispatch:
+    inputs:
+      ofp_link:
+        description: 'ofp link'
+        required: true
+      ofp_name:
+        description: 'name of ofp'
+        required: true
 
 env:
-  OFP_LINK: https://down-cloud.rbinternationalnetwork.workers.dev//RMX2185_11_A.79_201104_e6e6c09b.ofp
-  OFP_NAME: RMX2185_11_A.79_201104_e6e6c09b.ofp
+  OFP_LINK: ${{ github.event.inputs.ofp_link }}
+  OFP_NAME: ${{ github.event.inputs.ofp_name }}
   TZ: Asia/Kolkata
 
 jobs:
