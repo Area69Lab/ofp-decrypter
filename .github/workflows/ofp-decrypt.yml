@@ -1,7 +1,7 @@
 name: Ofp Decrypter by Area69Labs..
 
 on:
-workflow_dispatch:
+ workflow_dispatch:
     inputs:
       ofp_link:
         description: 'ofp link'
