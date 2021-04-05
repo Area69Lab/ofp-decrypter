@@ -50,4 +50,5 @@ jobs:
         run: |
           zip -r9 Decrypted."${OFPNAME}".zip out/
           echo "exit" | sshpass -p ${{ secrets.SFPASS }} ssh -tto StrictHostKeyChecking=no ${{ secrets.SFUSER }}@shell.sourceforge.net create
-          rsync -arvPz --rsh="sshpass -p ${{ secrets.SFPASS }} ssh -l ${{ secrets.SFUSER }}" Decrypted."${OFPNAME}".zip ${{ secrets.SFUSER }}@shell.sourceforge.net:/home/frs/project/${{ secrets.SFDIR }}/"$OFP_NAME"/  
+          rsync -arvPz --rsh="sshpass -p ${{ secrets.SFPASS }} ssh -l ${{ secrets.SFUSER }}" Decrypted."${OFPNAME}".zip ${{ secrets.SFUSER }}@shell.sourceforge.net:/home/frs/project/${{ secrets.SFDIR }}/"$OFP_NAME"/
+          echo -e "\nGet your file at https://sourceforge.net/projects/${{ secrets.SFDIR }}/$OFP_NAME/Decrypted.${OFPNAME}.zip\n\n"
