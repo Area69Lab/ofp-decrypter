@@ -1,65 +1,53 @@
-name: Ofp Decrypter by Area69Labs..
+name: OFP Decrypter by Area69Labs
 
 on:
- workflow_dispatch:
+  workflow_dispatch:
     inputs:
       ofp_link:
-        description: 'ofp link'
-        required: true
-      ofp_name:
-        description: 'name of ofp'
+        description: 'OFP Firmaware Link'
         required: true
 
 env:
   OFP_LINK: ${{ github.event.inputs.ofp_link }}
-  OFP_NAME: ${{ github.event.inputs.ofp_name }}
-  TZ: Asia/Kolkata
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-       - name: Checkout
-         uses: actions/checkout@master
-         
-       - name: CleanUp Enviroment
-         run: |
-            wget https://raw.githubusercontent.com/Mediatek-leaks/script-personal/main/init.sh
-            sudo bash init.sh
-            
-       - name: Downloading Ofp Now.. 
-         run: |
-            sudo apt-get install expect -y
-            sudo -E apt-get -qq update
-            wget $OFP_LINK
-             
-       - name: Decrypting Ozip Now
-         run: |
-             sudo -E apt-get -qq update
-             sudo pip install docopt
-             sudo pip install pycryptodome
-             wget https://raw.githubusercontent.com/bkerler/oppo_decrypt/master/ofp_mtk_decrypt.py
-             sudo python3 ofp_mtk_decrypt.py $OFP_NAME out
-             
-       - name: Compress & Upload Decrypted Zip
-         run: |
-              zip -r9 Decrypted-ofp.zip out
-              
-       - name: Upload Decrypted Zip
-         run: |
-              expect -c " 
-              spawn sftp ${{ secrets.SFUSER }}@frs.sourceforge.net
-              expect \"yes/no\"
-              send \"yes\r\"
-              expect \"Password\"        
-              send \"${{ secrets.SFPASS }}\r\"
-              expect \"sftp> \"
-              send \"cd ${{ secrets.SFDIR }}\r\"
-              set timeout -1
-              send \"put Decrypted-ofp.zip\r\"
-              expect \"Uploading\"
-              expect \"100%\"
-              expect \"sftp>\"
-              send \"bye\r\"
-              interact"     
+      - name: Checkout
+        uses: actions/checkout@main
+
+      - name: CleanUp Enviroment
+        uses: rokibhasansagar/slimhub_actions@main
+
+      - name: Download OFP Firmware
+        run: |
+          aria2c -c -s16 -x16 "$OFP_LINK" 2>/dev/null || wget -q --show-progress "$OFP_LINK"
+          OFPFILE=${OFP_LINK##*/}
+          echo "OFP_FILE=${OFPFILE}" >> ${GITHUB_ENV}
+          OFPNAME=${OFPFILE%.*}
+          echo "OFP_NAME=${OFPNAME}" >> ${GITHUB_ENV}
+
+      - name: Prepare Decrypter and Decrypt OFP
+        run: |
+          sudo apt-fast update -qqy
+          sudo apt-fast install -qqy openssl rsync sshpass
+          sudo pip3 install --upgrade pip wheel setuptools
+          sudo pip3 install --upgrade pycryptodome
+          git clone https://github.com/bkerler/oppo_decrypt.git --depth=1
+          printf "Trying to Decrypt QC OFP...\n"
+          python3 ./oppo_decrypt/ofp_qc_extract.py "$OFP_FILE" out 2>/dev/null
+          if [[ ! -f out/super.img || ! -f out/system.img ]]; then
+            printf "Trying to Decrypt MTK OFP...\n"
+            python3 ./oppo_decrypt/ofp_mtk_decrypt.py "$OFP_FILE" out 2>/dev/null
+            if [[ ! -f out/super.img || ! -f out/system.img ]]; then
+              printf "OFP Decryption Error\n" && exit 1
+            fi
+          fi
+
+      - name: Compress & Upload Decrypted Zip
+        run: |
+          zip -r9 Decrypted."${OFPNAME}".zip out/
+          echo "exit" | sshpass -p ${{ secrets.SFPASS }} ssh -tto StrictHostKeyChecking=no ${{ secrets.SFUSER }}@shell.sourceforge.net create
+          rsync -arvPz --rsh="sshpass -p ${{ secrets.SFPASS }} ssh -l ${{ secrets.SFUSER }}" Decrypted."${OFPNAME}".zip ${{ secrets.SFUSER }}@shell.sourceforge.net:/home/frs/project/${{ secrets.SFDIR }}/"$OFP_NAME"/  
