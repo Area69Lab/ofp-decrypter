@@ -1,49 +1,33 @@
-# OFP Decrypting online made easy #
+# Oppo/Realme/OnePlus OFP Decrypting online made easy
 
-## What this is ##
----------------------------------------------------------------------
-This is an easy way to decrypt Ofp file (realme/oppo/OnePlus fastboot ROM) to a Zip!!
+## What this is
 
-This works with GitHub actions, thank GitHub not me : )
+This is an easy way to decrypt Ofp file (Oppo/Realme/OnePlus Fastboot ROM) to a Zip!!
 
-### How to use ###
+This works inside GitHub actions. Thank GitHub, not me :)
+
+### How to use
 
 Here are some useful points to use this automation tool !
 
-1. Fork the repo .
-
-2. Set the variables, as listed below.
-
-##Some variables that you'd like to set:##
-
-```OFP_LINK : Direct Link to Ofp (Remember it should be direct download link)```
-
-```OFP_NAME : The Name of Ofp (like RMX2185_A.79_blahblah.ofp )```
-
-Now You Need to Setup Some Repository Secrets too :-
-* Go to Repo Settings > Secrets > Add New Repo Secret
-* Now Add Secrets Like This
-
-```SFUSER : Your Sourceforge Username```
-
-```SFPASS : Your Sourceforge Password```
-
-```SFDIR : Your Sourceforge Directory (eg: /home/frs/project/techyminati/Test ) ```
-
-3. Go to actions tab, enable workflows.
-
-4. Star the repo, go to actions tab again, and let Magic Goes Brr
+- [x] Fork the repo.
+- [x] You Need to Setup Some Repository Secrets. Go to Repo Settings > Secrets > Add New Repo Secret and Add Secrets Like This
+  - `SFUSER : Your Sourceforge Username`
+  - `SFPASS : Your Sourceforge Password`
+  - `SFDIR : Your Sourceforge Project Directory`
+    > eg: for https://sourceforge.net/projects/techyminati/, the value should be `techyminati`
+- [x] Go to actions tab, Enable workflows.
+- [x] Click on workflow name from left, and click "Run Workflow" from right with the OFP link.
+  - `OFP_LINK : Direct Link to Ofp (Remember it should be direct download link)`
+- [x] Reload page and let the Magic Happen.
 
 Note : You will find decrypted ofp download Link In Action Logs
 
+#### Credits and Thanks to People Who Helped me
 
-#### Credits and Thanks to People Who Helped me####
-
-Script Made by [***Aryan Sinha (techyminati) ***](https://github.com/techyminati)
+Script Made by [***Aryan Sinha (techyminati)***](https://github.com/techyminati)
 
 Thanks [***bkerler***](https://github.com/bkerler) for his tool 
-
-
 
 Enjoy Decrypting OFP Online :)
 
