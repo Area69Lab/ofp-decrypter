@@ -18,9 +18,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@main
 
-      - name: CleanUp Enviroment
-        uses: rokibhasansagar/slimhub_actions@main
-
       - name: Download OFP Firmware
         run: |
           aria2c -c -s16 -x16 "$OFP_LINK" 2>/dev/null || wget -q --show-progress "$OFP_LINK"
