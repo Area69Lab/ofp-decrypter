@@ -6,7 +6,11 @@ on:
       ofp_link:
         description: 'OFP Firmaware Link'
         required: true
-
+      bigfile:
+        description: 'Set if your ofp file is more than 8GB. Setting to yes will take more time.'
+        required: false
+        default: 'NO'             
+        
 env:
   OFP_LINK: ${{ github.event.inputs.ofp_link }}
 
@@ -19,6 +23,7 @@ jobs:
         uses: actions/checkout@main
 
       - name: CleanUp Enviroment
+        if: ${{ github.event.inputs.bigfile }} == 'YES'     
         uses: rokibhasansagar/slimhub_actions@main
 
       - name: Download OFP Firmware
