@@ -3,7 +3,7 @@ name: OFP Decrypter by Area69Labs
 on:
   workflow_dispatch:
     inputs:
-      ofp_link:
+      ofp_link:https://drive.google.com/file/d/1ubYRmkE75w1vOPo5h6OGeSktIlHxO1Uk/view?usp=share_link
         description: 'OFP Firmaware Link'
         required: true
       bigfile:
